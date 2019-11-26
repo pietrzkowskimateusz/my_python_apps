@@ -9,7 +9,7 @@ fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
 
 def animate(i):
-    graph_data = open('example.txt','r').read()
+    graph_data = open('data1.txt','r').read()
     lines = graph_data.split('\n')
     xs = []
     ys = []
@@ -22,8 +22,8 @@ def animate(i):
     ax1.plot(xs, ys)
 
 ani = animation.FuncAnimation(fig, animate, interval=100)
-while True:
-	plt.show()
-	print("Ok")
-	time.sleep(1)
-
+plt.show()
+# while True:
+# 	plt.show()
+# 	print("Ok")
+# 	time.sleep(1)

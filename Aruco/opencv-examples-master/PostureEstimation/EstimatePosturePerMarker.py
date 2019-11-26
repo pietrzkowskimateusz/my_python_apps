@@ -41,8 +41,8 @@ board = aruco.GridBoard_create(
 # Create vectors we'll be using for rotations and translations for postures
 rvecs, tvecs = None, None
 
-#cam = cv2.VideoCapture('gridboardiphonetest.mp4')
-cam = cv2.VideoCapture(0, cv2.CAP_ANY)
+cam = cv2.VideoCapture('aruco_calib.mp4')
+# cam = cv2.VideoCapture(0, cv2.CAP_ANY)
 cam.set(cv2.CAP_PROP_FRAME_WIDTH,720)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
 while(cam.isOpened()):
@@ -52,7 +52,7 @@ while(cam.isOpened()):
     if ret == True:
         # grayscale image
         gray = cv2.cvtColor(QueryImg, cv2.COLOR_BGR2GRAY)
-    
+
         # Detect Aruco markers
         corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, ARUCO_DICT, parameters=ARUCO_PARAMETERS)
         # Refine detected markers
@@ -64,7 +64,7 @@ while(cam.isOpened()):
                 detectedIds = ids,
                 rejectedCorners = rejectedImgPoints,
                 cameraMatrix = cameraMatrix,
-                distCoeffs = distCoeffs)   
+                distCoeffs = distCoeffs)
 
         ###########################################################################
         # TODO: Add validation here to reject IDs/corners not part of a gridboard #
@@ -75,13 +75,13 @@ while(cam.isOpened()):
 
         # Require 15 markers before drawing axis
         if ids is not None and len(ids) > 0:
-            # Estimate the posture of the gridboard, which is a construction of 3D space based on the 2D video 
+            # Estimate the posture of the gridboard, which is a construction of 3D space based on the 2D video
             #pose, rvec, tvec = aruco.estimatePoseBoard(corners, ids, board, cameraMatrix, distCoeffs)
             #if pose:
             #    # Draw the camera posture calculated from the gridboard
             #    QueryImg = aruco.drawAxis(QueryImg, cameraMatrix, distCoeffs, rvec, tvec, 0.3)
             # Estimate the posture per each Aruco marker
-            (rvecs,tvecs, _) = aruco.estimatePoseSingleMarkers(corners, 1, cameraMatrix, distCoeffs)           
+            (rvecs,tvecs, _) = aruco.estimatePoseSingleMarkers(corners, 1, cameraMatrix, distCoeffs)
             for rvec, tvec in zip(rvecs, tvecs):
                 QueryImg = aruco.drawAxis(QueryImg, cameraMatrix, distCoeffs, rvec, tvec, 2)
                 QueryImg = aruco.drawDetectedMarkers(QueryImg, corners, ids)
@@ -90,9 +90,9 @@ while(cam.isOpened()):
                 cv2.putText(QueryImg, strPosition, (100,100), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0), 2, cv2.LINE_AA)
         # Display our image
         cv2.putText(QueryImg, f'FPS: {math.floor(1.0 / (time.time() - start_time))}', (8, 16), cv2.FONT_HERSHEY_PLAIN, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
-        
+
         cv2.imshow('QueryImage', QueryImg)
-    
+
     # Exit at the end of the video on the 'q' keypress
     if cv2.waitKey(1) & 0xFF == ord('q'):
         cv2.destroyAllWindows()

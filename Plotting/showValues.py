@@ -4,8 +4,10 @@ import matplotlib.pyplot as plt
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
 
-anchorsX = (0,5000,5000,0)
-anchorsY = (0,0,5000,5000)
+# anchorsX = (0,5000,5000,0)
+# anchorsY = (0,0,5000,5000)
+anchorsX = (0,5,5,0)
+anchorsY = (0,0,5,5)
 
 data1 = open('data21.txt','r').read()
 lines1 = data1.split('\n')
@@ -14,8 +16,8 @@ y1 = []
 for line1 in lines1:
     if len(line1) > 1:
         x_1, y_1 = line1.split(',')
-        x1.append(float(x_1))
-        y1.append(float(y_1))
+        x1.append(float(x_1)/1000)
+        y1.append(float(y_1)/1000)
 
 
 data2 = open('data22.txt','r').read()
@@ -25,8 +27,8 @@ y2 = []
 for line2 in lines2:
     if len(line2) > 1:
         x_2, y_2 = line2.split(',')
-        x2.append(float(x_2))
-        y2.append(float(y_2))
+        x2.append(float(x_2)/1000)
+        y2.append(float(y_2)/1000)
 
 
 data3 = open('data23.txt','r').read()
@@ -36,14 +38,16 @@ y3 = []
 for line3 in lines3:
     if len(line3) > 1:
         x_3, y_3 = line3.split(',')
-        x3.append(float(x_3))
-        y3.append(float(y_3))
+        x3.append(float(x_3)/1000)
+        y3.append(float(y_3)/1000)
 
 
 
 ax1.clear()
-plt.xlim(-100, 5100)
-plt.ylim(-100,5100)
+plt.xlim(-0.1, 5.1)
+plt.ylim(-0.1,5.1)
+plt.xlabel('x [mm]')
+plt.ylabel('y [mm]')
 
 ax1.scatter(x1, y1,c='blue', label='RTLS')
 # rtls.set_label('RTLS')

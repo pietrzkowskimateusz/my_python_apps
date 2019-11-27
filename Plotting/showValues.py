@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import sys
 
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
@@ -9,7 +9,27 @@ ax1 = fig.add_subplot(1,1,1)
 anchorsX = (0,5,5,0)
 anchorsY = (0,0,5,5)
 
-data1 = open('data21.txt','r').read()
+try:
+    folder = str(sys.argv[1])
+except:
+    print("Błąd wczytywania parametru")
+
+file0 = (folder+'data0.txt')
+file1 = (folder+'data1.txt')
+file2 = (folder+'data2.txt')
+file3 = (folder+'data3.txt')
+
+data0 = open(file0,'r').read()
+lines0 = data0.split('\n')
+x0 = []
+y0 = []
+for line0 in lines0:
+    if len(line0) > 1:
+        x_0, y_0 = line0.split(',')
+        x0.append(float(x_0)/1000)
+        y0.append(float(y_0)/1000)
+
+data1 = open(file1,'r').read()
 lines1 = data1.split('\n')
 x1 = []
 y1 = []
@@ -20,7 +40,7 @@ for line1 in lines1:
         y1.append(float(y_1)/1000)
 
 
-data2 = open('data22.txt','r').read()
+data2 = open(file2,'r').read()
 lines2 = data2.split('\n')
 x2 = []
 y2 = []
@@ -31,7 +51,7 @@ for line2 in lines2:
         y2.append(float(y_2)/1000)
 
 
-data3 = open('data23.txt','r').read()
+data3 = open(file3,'r').read()
 lines3 = data3.split('\n')
 x3 = []
 y3 = []
@@ -44,18 +64,23 @@ for line3 in lines3:
 
 
 ax1.clear()
-plt.xlim(-0.1, 5.1)
-plt.ylim(-0.1,5.1)
-plt.xlabel('x [mm]')
-plt.ylabel('y [mm]')
+# plt.xlim(-0.1, 5.1)
+# plt.ylim(-0.1,5.1)
+plt.xlabel('x [m]')
+plt.ylabel('y [m]')
 
-ax1.scatter(x1, y1,c='blue', label='RTLS')
-# rtls.set_label('RTLS')
-odom, = ax1.plot(x2, y2, 'r')
+path, = ax1.plot(x0, y0,'y', linewidth=4)
+path.set_label('Ścieżka')
+
+odom, = ax1.plot(x2, y2,'r',linewidth=1)
 odom.set_label('Odometria')
-ax1.scatter(x3,y3,c='green', label='GPS')
-# gps.set_label('GPS')
-ax1.scatter(anchorsX, anchorsY,c='black', label='Anchors')
+
+ax1.scatter(x1, y1,c='blue',s=10, label='RTLS')
+
+ax1.scatter(x3,y3,c='green',s=20, label='GPS')
+
+ax1.scatter(anchorsX, anchorsY,s=50,c='black', label='Anchors')
+
 plt.legend()
 ax1.grid()
 plt.show()
